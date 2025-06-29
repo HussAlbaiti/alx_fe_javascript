@@ -101,7 +101,7 @@ async function fetchQuotesFromServer() {
       saveQuotes();
       populateCategories();
       filterQuotes();
-      alert('Synced with server and updated new quotes.');
+      showNotification('Quotes synced with server!');
     }
   } catch (err) {
     console.error('Failed to fetch from server:', err);
@@ -127,6 +127,21 @@ async function postQuoteToServer(quote) {
 // Sync local data with server periodically
 function syncQuotes() {
   fetchQuotesFromServer();
+}
+
+// Notification for sync
+function showNotification(message) {
+  const notice = document.createElement('div');
+  notice.textContent = message;
+  notice.style.position = 'fixed';
+  notice.style.bottom = '10px';
+  notice.style.right = '10px';
+  notice.style.backgroundColor = '#4caf50';
+  notice.style.color = 'white';
+  notice.style.padding = '10px';
+  notice.style.borderRadius = '5px';
+  document.body.appendChild(notice);
+  setTimeout(() => document.body.removeChild(notice), 3000);
 }
 
 setInterval(syncQuotes, 30000); // sync every 30 seconds
