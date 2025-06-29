@@ -41,6 +41,7 @@ function addQuote() {
   saveQuotes();
   populateCategories();
   filterQuotes();
+  postQuoteToServer({ text, category });
   document.getElementById('newQuoteText').value = '';
   document.getElementById('newQuoteCategory').value = '';
 }
@@ -103,6 +104,22 @@ async function fetchQuotesFromServer() {
     }
   } catch (err) {
     console.error('Failed to fetch from server:', err);
+  }
+}
+
+// Post new quote to server (simulated)
+async function postQuoteToServer(quote) {
+  try {
+    await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(quote)
+    });
+    console.log('Posted quote to server:', quote);
+  } catch (err) {
+    console.error('Failed to post quote to server:', err);
   }
 }
 
