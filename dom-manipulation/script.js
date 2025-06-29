@@ -37,11 +37,12 @@ function addQuote() {
   const text = document.getElementById('newQuoteText').value.trim();
   const category = document.getElementById('newQuoteCategory').value.trim();
   if (!text || !category) return alert('Please enter both quote text and category.');
-  quotes.push({ text, category });
+  const newQuote = { text, category };
+  quotes.push(newQuote);
   saveQuotes();
   populateCategories();
   filterQuotes();
-  postQuoteToServer({ text, category });
+  postQuoteToServer(newQuote);
   document.getElementById('newQuoteText').value = '';
   document.getElementById('newQuoteCategory').value = '';
 }
@@ -123,13 +124,16 @@ async function postQuoteToServer(quote) {
   }
 }
 
-// Periodic sync with server
-setInterval(fetchQuotesFromServer, 30000); // sync every 30 seconds
+// Sync local data with server periodically
+function syncQuotes() {
+  fetchQuotesFromServer();
+}
+
+setInterval(syncQuotes, 30000); // sync every 30 seconds
 
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
 document.addEventListener('DOMContentLoaded', () => {
   loadQuotes();
-
   const lastQuote = sessionStorage.getItem('lastQuote');
   if (lastQuote) {
     const quote = JSON.parse(lastQuote);
